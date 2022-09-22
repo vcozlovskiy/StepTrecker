@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepTrecker", "StepTrecker\StepTrecker.csproj", "{4A76A29F-22B3-496B-9A89-8F3BFF705071}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A76A29F-22B3-496B-9A89-8F3BFF705071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A76A29F-22B3-496B-9A89-8F3BFF705071}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A76A29F-22B3-496B-9A89-8F3BFF705071}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A76A29F-22B3-496B-9A89-8F3BFF705071}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97453752-5357-48C8-976A-C1FBC6D2B898}
+	EndGlobalSection
+EndGlobal

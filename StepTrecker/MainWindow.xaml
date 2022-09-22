@@ -1,0 +1,29 @@
+﻿<Window x:Class="StepTrecker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StepTrecker" 
+        xmlns:col="clr-namespace:System.Collections;assembly=System.Collections.NonGeneric"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="538" Width="868">
+    <Grid Margin="0,0,10,-6">
+        <ListView Name="profileList" ItemsSource="{DynamicResource ResourceKey=users}" Margin="0,0,429,0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=UserName}">
+                        Имя
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="Txt" Text="{Binding FirstName}"  Foreground="Purple"></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn  DisplayMemberBinding="{Binding Path=AverageSteps}">Средний результат</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=BestResult}">Лучший результат</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=WorseResult}">Худший результат</GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
