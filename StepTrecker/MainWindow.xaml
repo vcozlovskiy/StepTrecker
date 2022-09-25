@@ -15,7 +15,7 @@
         <ListView Name="profileList" ItemsSource="{Binding TableHelper.Users}" SelectedItem="{Binding SelectedUser}"
                   Margin="10,10,0,0" Height="498" VerticalAlignment="Top" HorizontalAlignment="Left" Width="501">
             <ListView.View>
-                <GridView AllowsColumnReorder="true">
+                <GridView >
                     <GridViewColumn>
                         <GridViewColumnHeader FontWeight="Bold">Имя</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
@@ -56,7 +56,6 @@
 
         </lvc:CartesianChart>
         <Button Command="{Binding SerializeCommand}" CommandParameter="{Binding SelectedUser}" Content="Экспорт" HorizontalAlignment="Left" Margin="516,475,0,0" VerticalAlignment="Top" Height="33" Width="140"/>
-        <Button Command="{Binding SelectFolder}" Content="Выбрать каталог" HorizontalAlignment="Left" Margin="516,436,0,0" VerticalAlignment="Top" Width="140" Height="34"/>
     </Grid>
 
 </Window>

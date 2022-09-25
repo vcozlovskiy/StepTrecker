@@ -1,18 +1,12 @@
-﻿using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using StepTrecker.Model;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System;
-using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
 using Microsoft.Win32;
 using System.Text.Json;
 using System.IO;
 using Ookii.Dialogs.Wpf;
-using LiveChartsCore.Defaults;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using StepTrecker.Model;
 
 namespace StepTrecker.ViewModel
 {
@@ -32,7 +26,6 @@ namespace StepTrecker.ViewModel
             }
         }
         private RelayCommand _serializeCommand;
-        private RelayCommand _selectFolder;
         public RelayCommand SerializeCommand
         {
             get
@@ -51,24 +44,6 @@ namespace StepTrecker.ViewModel
                 }));
             }
         }
-        public RelayCommand SelectFolder
-        {
-            get
-            {
-                return _selectFolder ??= new RelayCommand(obj =>
-                {
-                    var dialog = new VistaFolderBrowserDialog();
-                    if (dialog.ShowDialog().GetValueOrDefault())
-                    {
-                        var folder = dialog.SelectedPath;
-                        userProvider.Path = folder;
-
-                        TableHelper.InitTable(userProvider.GetUsers());
-                        SelectedUser = TableHelper.Users.FirstOrDefault();
-                    }
-                });
-            }
-        }
         public ITableHelper TableHelper { get; init; }
         public IChartHelper ChartHelper { get; init; }
         private IUserProvider userProvider { get; init; }
@@ -85,5 +60,6 @@ namespace StepTrecker.ViewModel
             TableHelper.InitTable(provider.GetUsers());
             SelectedUser = TableHelper.Users.FirstOrDefault();
         }
+
     }
 }
