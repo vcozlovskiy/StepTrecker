@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace StepTrecker.Model
 {
     public class UserProfile
     {
         public string UserName { get; set; }
-        public int AverageSteps 
-        { 
-            get 
+        public int AverageSteps
+        {
+            get
             {
                 return (int)DayProfiles.Average(x => x.Steps);
             }

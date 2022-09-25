@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
+﻿using LiveChartsCore.SkiaSharpView;
 using Ookii.Dialogs.Wpf;
 using StepTrecker.Model;
 using StepTrecker.ViewModel;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace StepTrecker
 {
@@ -28,7 +14,7 @@ namespace StepTrecker
     {
         public MainWindow()
         {
-            var userHelper = new UserProvider(GetDirectory(), (s) => MessageBox.Show(s, s, MessageBoxButton.OK));
+            var userHelper = new UserProvider(GetDirectory(), (messege, title) => MessageBox.Show(messege, title, MessageBoxButton.OK));
 
             var c = new UserProfileViewModel(userHelper, new ChartHelper(), new TableHelper());
 

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace StepTrecker.Model
@@ -13,20 +11,20 @@ namespace StepTrecker.Model
     {
         private string _path;
         private List<UserProfile> _users;
-        private Action<string> _exeptionAlert;
+        private Action<string, string> _exeptionAlert;
 
-        public string Path 
-        { 
-            get 
-            { 
-                return _path; 
-            } 
-            set 
-            { 
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+            set
+            {
                 _path = value;
                 _users = null;
                 GetUsers();
-            } 
+            }
         }
 
         public UserProvider(string pathToCatalog)
@@ -39,7 +37,7 @@ namespace StepTrecker.Model
             _path = pathToCatalog;
         }
 
-        public UserProvider(string pathToCatalog, Action<string> exeptionAlert) : this(pathToCatalog)
+        public UserProvider(string pathToCatalog, Action<string, string> exeptionAlert) : this(pathToCatalog)
         {
             _exeptionAlert = exeptionAlert;
         }
@@ -80,12 +78,11 @@ namespace StepTrecker.Model
 
         public List<UserProfile> UsersInit()
         {
-            using var fs = new FileStream(Directory.GetFiles(_path).First(), FileMode.OpenOrCreate);
-
             List<UserProfile> userProfils;
 
             try
             {
+                using var fs = new FileStream(Directory.GetFiles(_path).First(), FileMode.OpenOrCreate);
                 userProfils = JsonSerializer.Deserialize<List<DayProfile>>(fs)
                 .Select(x => new UserProfile() { UserName = x.User }).ToList();
             }
@@ -93,7 +90,7 @@ namespace StepTrecker.Model
             {
                 if (_exeptionAlert != null)
                 {
-                    _exeptionAlert("В каталоге отсувствуют данные");
+                    _exeptionAlert("В каталоге отсувствуют данные", "Ошибка");
                 }
                 userProfils = new List<UserProfile>();
             }
