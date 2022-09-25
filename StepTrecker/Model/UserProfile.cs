@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace StepTrecker.Model
 {
-    internal class UserProfile
+    public class UserProfile
     {
         public string UserName { get; set; }
         public int AverageSteps 

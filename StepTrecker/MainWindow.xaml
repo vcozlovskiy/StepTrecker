@@ -3,27 +3,58 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StepTrecker" 
-        xmlns:col="clr-namespace:System.Collections;assembly=System.Collections.NonGeneric"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF" 
+        xmlns:local="clr-namespace:StepTrecker.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="538" Width="868">
-    <Grid Margin="0,0,10,-6">
-        <ListView Name="profileList" ItemsSource="{DynamicResource ResourceKey=users}" Margin="0,0,429,0">
+        Title="MainWindow" ResizeMode="NoResize" Width="1165" Height="586">
+
+    <Grid Margin="10,0,10,-6">
+        <ListView Name="profileList" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}"
+                  Margin="10,10,0,0" Height="498" VerticalAlignment="Top" HorizontalAlignment="Left" Width="501">
             <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=UserName}">
-                        Имя
+                <GridView AllowsColumnReorder="true">
+                    <GridViewColumn>
+                        <GridViewColumnHeader FontWeight="Bold">Имя</GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock x:Name="Txt" Text="{Binding FirstName}"  Foreground="Purple"></TextBlock>
+                                <TextBlock Text="{Binding Path=UserName}" Foreground="Black"></TextBlock>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn  DisplayMemberBinding="{Binding Path=AverageSteps}">Средний результат</GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=BestResult}">Лучший результат</GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=WorseResult}">Худший результат</GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader FontWeight="Bold">Средний результат</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=AverageSteps}" Foreground="Black"></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn >
+                        <GridViewColumnHeader FontWeight="Bold">Лучший результат</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=BestResult}" Foreground="Black"></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader FontWeight="Bold">Худший результат</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=WorseResult}" Foreground="Black"></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+
+        <lvc:CartesianChart
+        Series="{Binding Series}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="474" Height="498" VerticalAlignment="Top"/>
+        <Button Command="{Binding SerializeCommand}" CommandParameter="{Binding SelectedUser}" Content="Экспорт" HorizontalAlignment="Left" Margin="516,75,0,0" VerticalAlignment="Top" Height="33" Width="140"/>
     </Grid>
+
+    <Window.DataContext>
+        <local:UserProfileViewModel />
+    </Window.DataContext>
 </Window>

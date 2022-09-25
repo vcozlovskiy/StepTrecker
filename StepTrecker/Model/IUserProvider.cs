@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StepTrecker.Model
 {
-    internal interface IUserProvider
+    public interface IUserProvider
     {
         Task<List<UserProfile>> GetUsersAsync();
         List<UserProfile> GetUsers();

@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using StepTrecker.Model;
+using StepTrecker.ViewModel;
 
 namespace StepTrecker
 {
@@ -22,20 +23,14 @@ namespace StepTrecker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<UserProfile> users;
         public MainWindow()
         {
-            users = new ObservableCollection<UserProfile>();
-            InitializeComponent();
-
             var userHelper = new UserProvider(@"C:\Users\kozlo\source\repos\StepTrecker\StepTrecker\TestData\");
 
-            foreach (var i in userHelper.GetUsers())
-            {
-                users.Add(i);
-            }
+            var c = new UserProfileViewModel(userHelper);
 
-            this.Resources["users"] = users;
+            InitializeComponent();
+            DataContext = c;
         }
     }
 }
