@@ -9,95 +9,81 @@ using System;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using Microsoft.Win32;
+using System.Text.Json;
+using System.IO;
+using Ookii.Dialogs.Wpf;
+using LiveChartsCore.Defaults;
 
 namespace StepTrecker.ViewModel
 {
     public class UserProfileViewModel
     {
-        public ObservableCollection<ListViewItem> Users { get; set; } = new ObservableCollection<ListViewItem>();
-
-        private ListViewItem _selectedUser = new ListViewItem();
-        
+        private ListViewItem _selectedUser = new();
         public ListViewItem SelectedUser
         {
             get { return _selectedUser; }
             set
             {
-                if(value.Content is UserProfile profile)
+                if (value != null && value.Content is UserProfile)
                 {
                     _selectedUser = value;
-                    UpdateChart();
+                    ChartHelper.SelectedProfile = value;
                 }
-            } 
+            }
         }
-
-        public ISeries[] Series { get; set; } = 
-            new ISeries[]
-                {
-                    new LineSeries<int>
-                    {
-                        Values = new int[] { 2, 1, 3, 5, 3, 4, 6 },
-                        Fill = new SolidColorPaint(SKColors.Blue),
-                    }
-                };
-
         private RelayCommand _serializeCommand;
-
+        private RelayCommand _selectFolder;
         public RelayCommand SerializeCommand
         {
             get
             {
                 return _serializeCommand ?? (_serializeCommand = new RelayCommand(obj =>
                 {
-                    var openFileDialog = new OpenFileDialog();
-                    openFileDialog.InitialDirectory = "c:\\";
-                    openFileDialog.RestoreDirectory = true;
+                    SaveFileDialog saveFileDialog = new SaveFileDialog() { DefaultExt = ".json" };
 
-                    if (openFileDialog.ShowDialog() == true)
+                    if (saveFileDialog.ShowDialog() == true)
                     {
-                        
+                        var options = new JsonSerializerOptions() { WriteIndented = true };
+                        var json = JsonSerializer.Serialize(SelectedUser.Content, options);
+
+                        File.WriteAllText(saveFileDialog.FileName, json);
                     }
                 }));
             }
         }
-
-        public UserProfileViewModel() 
+        public RelayCommand SelectFolder
         {
-
-        }
-
-        public UserProfileViewModel(IUserProvider provider)
-        {
-            var users = provider.GetUsers().Select(x =>
+            get
             {
-                ListViewItem listView = new ListViewItem()
+                return _selectFolder ??= new RelayCommand(obj =>
                 {
-                    Content = x,
-                };
+                    var dialog = new VistaFolderBrowserDialog();
+                    if (dialog.ShowDialog().GetValueOrDefault())
+                    {
+                        var folder = dialog.SelectedPath;
+                        userProvider.Path = folder;
 
-                if (x.BestResult - x.AverageSteps > x.AverageSteps * 0.2)
-                {
-                    listView.Background = new SolidColorBrush(Colors.GreenYellow);
-                }
-
-                if (x.AverageSteps - x.WorseResult > x.AverageSteps * 0.2)
-                {
-                    listView.Background = new SolidColorBrush(Colors.OrangeRed);
-                }
-
-                return listView;
-            });
-            Users = new ObservableCollection<ListViewItem>(users);
-
-            SelectedUser = Users[0];
-        }
-
-        private void UpdateChart()
-        {
-            if (_selectedUser.Content is UserProfile user)
-            {
-                Series[0].Values = user.DayProfiles.Select(x => x.Steps);
+                        TableHelper.InitTable(userProvider.GetUsers());
+                        SelectedUser = TableHelper.Users.FirstOrDefault();
+                    }
+                });
             }
+        }
+        public ITableHelper TableHelper { get; init; }
+        public IChartHelper ChartHelper { get; init; }
+        private IUserProvider userProvider { get; init; }
+        public UserProfileViewModel()
+        {
+
+        }
+        public UserProfileViewModel(IUserProvider provider, IChartHelper helper, ITableHelper tableHelper)
+        {
+            TableHelper = tableHelper;
+            userProvider = provider;
+            ChartHelper = helper;
+
+            TableHelper.InitTable(provider.GetUsers());
+            SelectedUser = TableHelper.Users.FirstOrDefault();
         }
     }
 }

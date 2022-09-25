@@ -8,6 +8,7 @@ namespace StepTrecker.Model
 {
     public interface IUserProvider
     {
+        string Path { get; set; }
         Task<List<UserProfile>> GetUsersAsync();
         List<UserProfile> GetUsers();
     }
